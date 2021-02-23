@@ -1,10 +1,13 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const mongoose = require('mongoose');
 
 const app = express();
 
 app.use(bodyParser.urlencoded({ extended: true}));
 app.use(bodyParser.json());
+
+// BD
 
 const posts = [
     {
@@ -39,4 +42,12 @@ app.post('/posts', (req, res) => {
     return res.send(posts);
 } )
 
-app.listen(3000, () => console.log('Server on port 3000'));
+//connection to mongo
+mongoose.connect(`mongodb://localhost/server-side` );
+
+const Cat = mongoose.model('Cat', { name: String });
+const kitty = new Cat({name: 'Ziligan'});
+kitty.save().then(() => console.log('meow'));
+
+
+app.listen(3000, () => console.log( 'Server on port 3000' ));
